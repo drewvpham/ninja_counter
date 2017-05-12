@@ -5,24 +5,25 @@ app.secret_key='supersecrets'
 @app.route('/')
 def index():
     if 'counter' not in session:
-        session['counter']=0
+        session['counter']=1
+    elif 'counter' in session:
+        session['counter']+=1
     if 'reset' not in session:
         session['reset']=0
 
     return render_template("index.html")
-# this route will handle our form submission
-# notice how we defined which HTTP methods are allowed by this route
+    
 @app.route('/add2', methods=['POST'])
 def add2():
     if request.form['add2']=='add2':
         session['counter']+=2
-    return render_template("index.html")
+    return redirect('/')
 
 @app.route('/reset', methods=['POST'])
 def reset():
     if request.form['reset']=='reset':
         session['counter']=0
-    return render_template("index.html")
+    return redirect('/')
 
 
 app.run(debug=True) # run our server
